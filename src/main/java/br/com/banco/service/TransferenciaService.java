@@ -9,18 +9,18 @@ import br.com.banco.domain.Transferencia;
 
 @Service
 public interface TransferenciaService {
-
-    List<Transferencia> TransacoesPorContaId(Long contaId);
-
-    List<Transferencia> TransacoesPorPeriodo(LocalDateTime inicioPeriodo, LocalDateTime fimPeriodo);
-
-    List<Transferencia> TransacoesPorNomeOperador(String nomeOperador);
-
-    List<Transferencia> TodasTransacoes();
-
-    List<Transferencia> TranscacoesPorNomePeriodoEPorNomeOperador(String nomeOperador, LocalDateTime inicioPeriodo,
-            LocalDateTime fimPeriodo);
-
     
+    List<Transferencia> buscarTransacoes(Long contaId, LocalDateTime inicioPeriodo, LocalDateTime fimPeriodo, String nomeOperador);
+
+    List<Transferencia> transacoesPorContaId(Long contaId);
+
+    List<Transferencia> transacoesPorPeriodo(LocalDateTime inicioPeriodo, LocalDateTime fimPeriodo);
+
+    List<Transferencia> transacoesPorNomeOperador(String nomeOperador);
+
+    List<Transferencia> todasTransacoes();
+
+    List<Transferencia> transcacoesPorNomePeriodoEPorNomeOperador(String nomeOperador, LocalDateTime inicioPeriodo,
+            LocalDateTime fimPeriodo);
 
 }
