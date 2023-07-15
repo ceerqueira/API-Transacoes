@@ -28,22 +28,8 @@ public class TransferenciaController {
             @RequestParam(required = false) String nomeOperador) {
         
 
-        List<Transferencia> transacoes;
-
-        if (inicioPeriodo != null && fimPeriodo != null &&(nomeOperador != null && !nomeOperador.trim().isEmpty())) {
-            transacoes = transferenciaService.TranscacoesPorNomePeriodoEPorNomeOperador(nomeOperador, inicioPeriodo,
-                    fimPeriodo);
-        } else {
-            if (contaId != null) {
-                transacoes = transferenciaService.TransacoesPorContaId(contaId);
-            } else if (inicioPeriodo != null && fimPeriodo != null) {
-                transacoes = transferenciaService.TransacoesPorPeriodo(inicioPeriodo, fimPeriodo);
-            } else if (nomeOperador != null) {
-                transacoes = transferenciaService.TransacoesPorNomeOperador(nomeOperador);
-            } else {
-                transacoes = transferenciaService.TodasTransacoes();
-            }
-        }
+        List<Transferencia> transacoes = transferenciaService.buscarTransacoes(contaId, inicioPeriodo, fimPeriodo, nomeOperador);
+    
 
         return ResponseEntity.ok(transacoes);
     }
