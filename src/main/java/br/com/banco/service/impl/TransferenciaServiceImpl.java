@@ -16,27 +16,43 @@ public class TransferenciaServiceImpl implements TransferenciaService {
     private TransacaoRepository repository;
 
     @Override
-    public List<Transferencia> TransacoesPorContaId(Long contaId) {
+    public List<Transferencia> buscarTransacoes(Long contaId, LocalDateTime inicioPeriodo, LocalDateTime fimPeriodo,
+            String nomeOperador) {
+        if (inicioPeriodo != null && fimPeriodo != null && nomeOperador != null && !nomeOperador.trim().isEmpty()) {
+            return transcacoesPorNomePeriodoEPorNomeOperador(nomeOperador, inicioPeriodo, fimPeriodo);
+        } else if (contaId != null) {
+            return transacoesPorContaId(contaId);
+        } else if (inicioPeriodo != null && fimPeriodo != null) {
+            return transacoesPorPeriodo(inicioPeriodo, fimPeriodo);
+        } else if (nomeOperador != null) {
+            return transacoesPorNomeOperador(nomeOperador);
+        } else {
+            return todasTransacoes();
+        }
+    }
+
+    @Override
+    public List<Transferencia> transacoesPorContaId(Long contaId) {
         return repository.findByContaId(contaId);
     }
 
     @Override
-    public List<Transferencia> TransacoesPorPeriodo(LocalDateTime inicioPeriodo, LocalDateTime fimPeriodo) {
+    public List<Transferencia> transacoesPorPeriodo(LocalDateTime inicioPeriodo, LocalDateTime fimPeriodo) {
         return repository.findByDataTransferenciaBetween(inicioPeriodo, fimPeriodo);
     }
 
     @Override
-    public List<Transferencia> TransacoesPorNomeOperador(String nomeOperador) {
+    public List<Transferencia> transacoesPorNomeOperador(String nomeOperador) {
         return repository.findByNomeOperadorTransacao(nomeOperador);
     }
 
     @Override
-    public List<Transferencia> TodasTransacoes() {
+    public List<Transferencia> todasTransacoes() {
         return repository.findAll();
     }
 
     @Override
-    public List<Transferencia> TranscacoesPorNomePeriodoEPorNomeOperador(String nomeOperador,
+    public List<Transferencia> transcacoesPorNomePeriodoEPorNomeOperador(String nomeOperador,
             LocalDateTime inicioPeriodo, LocalDateTime fimPeriodo) {
         return repository.findByNomeOperadorTransacaoAndDataTransferenciaBetween(nomeOperador, inicioPeriodo,
                 fimPeriodo);
