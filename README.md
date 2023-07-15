@@ -57,4 +57,12 @@ Abaixo, algumas capturas de tela da interface do Swagger UI:
 
 <img width="1153" alt="Captura de Tela 2023-07-15 às 12 00 31" src="https://github.com/ceerqueira/API-Transacoes/assets/50030996/31b19961-cc99-4b92-973a-12ce403afa7d">
 
+## Interface de Usuário da Aplicação
+
+A interface de usuário da aplicação foi desenvolvida utilizando a biblioteca React para construção da interface. 
+
+O código fonte do front-end pode ser acessado no seguinte repositório: [Frontend API Transações](https://github.com/ceerqueira/frontend-API-Transacoes).
+
+<img width="1426" alt="Captura de Tela 2023-07-15 às 12 05 51" src="https://github.com/ceerqueira/API-Transacoes/assets/50030996/04aea61c-b9f9-428d-8737-3c0aeba028c7">
+
 
