@@ -46,4 +46,28 @@ class BancoApplicationTests {
         Transferencia[] transferencias = responseEntity.getBody();
         assertThat(transferencias).isNotNull();
     }
+    
+    @Test
+    void testBuscarTransacoesPorContaId() {
+        int contaId = 1;
+        String url = "http://localhost:8080" + "/transferencia?contaId=" + contaId;
+        ResponseEntity<Transferencia[]> responseEntity = restTemplate.getForEntity(url, Transferencia[].class);
+
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        Transferencia[] transferencias = responseEntity.getBody();
+        assertThat(transferencias).isNotNull();
+        assertThat(transferencias.length).isGreaterThan(0);
+    }
+
+    @Test
+    void testBuscarTodasTransacoes() {
+        String url = "http://localhost:8080" + "/transferencia";
+        ResponseEntity<Transferencia[]> responseEntity = restTemplate.getForEntity(url, Transferencia[].class);
+
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        Transferencia[] transferencias = responseEntity.getBody();
+        assertThat(transferencias).isNotNull();
+        assertThat(transferencias.length).isGreaterThan(0);
+    }
+
 }
