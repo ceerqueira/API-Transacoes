@@ -20,14 +20,16 @@ public class TransferenciaServiceImpl implements TransferenciaService {
             String nomeOperador) {
         if (inicioPeriodo != null && fimPeriodo != null && nomeOperador != null && !nomeOperador.trim().isEmpty()) {
             return transcacoesPorNomePeriodoEPorNomeOperador(nomeOperador, inicioPeriodo, fimPeriodo);
-        } else if (contaId != null) {
-            return transacoesPorContaId(contaId);
-        } else if (inicioPeriodo != null && fimPeriodo != null) {
-            return transacoesPorPeriodo(inicioPeriodo, fimPeriodo);
-        } else if (nomeOperador != null) {
-            return transacoesPorNomeOperador(nomeOperador);
         } else {
-            return todasTransacoes();
+            if (contaId != null) {
+                return transacoesPorContaId(contaId);
+            } else if (inicioPeriodo != null && fimPeriodo != null) {
+                return transacoesPorPeriodo(inicioPeriodo, fimPeriodo);
+            } else if (nomeOperador != null) {
+                return transacoesPorNomeOperador(nomeOperador);
+            } else {
+                return todasTransacoes();
+            }
         }
     }
 
