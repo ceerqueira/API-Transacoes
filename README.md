@@ -48,7 +48,7 @@ A documentação da API está disponível através do Swagger UI, que pode ser a
 
 Abaixo, algumas capturas de tela da interface do Swagger UI:
 
-<img width="1201" alt="Captura de Tela 2023-07-15 às 12 00 06" src="https://github.com/ceerqueira/API-Transacoes/assets/50030996/b1ae7930-cfbe-44fe-b264-f89254da9644">
+<img width="1423" alt="Captura de Tela 2023-07-15 às 12 22 17" src="https://github.com/ceerqueira/API-Transacoes/assets/50030996/804bdec3-999e-4ba9-8ca2-9a4aaf2b9489">
 
 
 <img width="1152" alt="Captura de Tela 2023-07-15 às 12 00 49" src="https://github.com/ceerqueira/API-Transacoes/assets/50030996/a57ad923-bfc1-46eb-8a2d-9a65272cbfcf">
