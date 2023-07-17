@@ -1,25 +1,26 @@
 package br.com.banco.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import br.com.banco.domain.Transferencia;
 
 @Service
 public interface TransferenciaService {
     
-    ResponseEntity<?> buscarTransacoes(Long contaId, LocalDateTime inicioPeriodo, LocalDateTime fimPeriodo, String nomeOperador);
+    List<Transferencia> buscarTransacoes(Long contaId, LocalDateTime inicioPeriodo, LocalDateTime fimPeriodo, String nomeOperador);
 
-    ResponseEntity<?> transacoesPorContaId(Long contaId);
+    List<Transferencia> transacoesPorContaId(Long contaId);
 
-    ResponseEntity<?> transacoesPorPeriodo(LocalDateTime inicioPeriodo, LocalDateTime fimPeriodo);
+    List<Transferencia> transacoesPorPeriodo(LocalDateTime inicioPeriodo, LocalDateTime fimPeriodo);
 
-    ResponseEntity<?> transacoesPorNomeOperador(String nomeOperador);
+    List<Transferencia> transacoesPorNomeOperador(String nomeOperador);
 
-    ResponseEntity<?> todasTransacoes();
+    List<Transferencia> todasTransacoes();
 
-    ResponseEntity<?> transcacoesPorNomePeriodoEPorNomeOperador(String nomeOperador, LocalDateTime inicioPeriodo,
+    List<Transferencia> transcacoesPorNomePeriodoEPorNomeOperador(String nomeOperador, LocalDateTime inicioPeriodo,
             LocalDateTime fimPeriodo);
 
 }
