@@ -4,12 +4,6 @@
 
 A API Transações é uma solução RESTful escrita em Java, projetada para consulta de transações por meio de diferentes parâmetros: ID da conta, período de tempo ou nome do operador. Sua estrutura robusta e escalável proporciona uma maneira eficiente de gerenciar e acessar informações de transações.
 
-## Pré-requisitos
-Antes de iniciar, certifique-se de ter o seguinte software instalado:
-
-- Java JDK 11 ou superior
-- Maven 3.6.3 ou superior
-
 ## Como executar a aplicação 
 
 ### IDE
