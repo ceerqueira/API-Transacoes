@@ -8,7 +8,7 @@ import br.com.banco.domain.Transferencia;
 import br.com.banco.exception.IdContaNotFoundException;
 import br.com.banco.exception.NomeNotFoundExpecion;
 import br.com.banco.exception.PeriodoNotFoundExpecion;
-import br.com.banco.exception.transcacoesPorNomePeriodoEPorNomeOperadorNotFoundExpecion;
+import br.com.banco.exception.TranscacoesPorNomePeriodoEPorNomeOperadorNotFoundExpecion;
 import br.com.banco.repository.TransacaoRepository;
 import br.com.banco.service.TransferenciaService;
 
@@ -69,9 +69,9 @@ public class TransferenciaServiceImpl implements TransferenciaService {
     }
 
     @Override
-    public List<Transferencia> transcacoesPorNomePeriodoEPorNomeOperador(String nomeOperador,LocalDateTime inicioPeriodo, LocalDateTime fimPeriodo) {
+    public List<Transferencia> TranscacoesPorNomePeriodoEPorNomeOperador(String nomeOperador,LocalDateTime inicioPeriodo, LocalDateTime fimPeriodo) {
         if(repository.findByNomeOperadorTransacaoAndDataTransferenciaBetween(nomeOperador, inicioPeriodo,fimPeriodo).isEmpty()){
-                throw new transcacoesPorNomePeriodoEPorNomeOperadorNotFoundExpecion("Nome do Operador ou Periodo escolhido não encontrado");
+                throw new TranscacoesPorNomePeriodoEPorNomeOperadorNotFoundExpecion("Nome do Operador ou Periodo escolhido não encontrado");
                 }
         
         return repository.findByNomeOperadorTransacaoAndDataTransferenciaBetween(nomeOperador, inicioPeriodo,
