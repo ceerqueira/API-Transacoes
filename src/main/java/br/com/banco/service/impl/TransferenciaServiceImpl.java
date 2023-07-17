@@ -12,16 +12,20 @@ import br.com.banco.exception.TranscacoesPorNomePeriodoEPorNomeOperadorNotFoundE
 import br.com.banco.repository.TransacaoRepository;
 import br.com.banco.service.TransferenciaService;
 
+// Anotação indicando que esta classe é um serviço
 @Service
 public class TransferenciaServiceImpl implements TransferenciaService {
 
+    // Injeção automática da classe TransacaoRepository
     @Autowired
     private TransacaoRepository repository;
 
+    // Implementação do método buscarTransacoes da interface TransferenciaService
     @Override
     public List<Transferencia> buscarTransacoes(Long contaId, LocalDateTime inicioPeriodo, LocalDateTime fimPeriodo,
             String nomeOperador) {
 
+        // Verifica quais parâmetros foram fornecidos e chama o método correspondente
         if (inicioPeriodo != null && fimPeriodo != null && nomeOperador != null && !nomeOperador.trim().isEmpty()) {
             return transcacoesPorNomePeriodoEPorNomeOperador(nomeOperador, inicioPeriodo, fimPeriodo);
         } else {
@@ -35,9 +39,10 @@ public class TransferenciaServiceImpl implements TransferenciaService {
                 return todasTransacoes();
             }
         }
-
     }
 
+    // Implementação dos outros métodos da interface TransferenciaService
+    // Eles buscam transações com base em diferentes critérios e lançam exceções se não encontrarem nenhuma transação
     @Override
     public List<Transferencia> transacoesPorContaId(Long contaId) {
         if (repository.findByContaId(contaId).isEmpty()) {
@@ -69,7 +74,7 @@ public class TransferenciaServiceImpl implements TransferenciaService {
     }
 
     @Override
-    public List<Transferencia> TranscacoesPorNomePeriodoEPorNomeOperador(String nomeOperador,LocalDateTime inicioPeriodo, LocalDateTime fimPeriodo) {
+    public List<Transferencia> transcacoesPorNomePeriodoEPorNomeOperador(String nomeOperador,LocalDateTime inicioPeriodo, LocalDateTime fimPeriodo) {
         if(repository.findByNomeOperadorTransacaoAndDataTransferenciaBetween(nomeOperador, inicioPeriodo,fimPeriodo).isEmpty()){
                 throw new TranscacoesPorNomePeriodoEPorNomeOperadorNotFoundExpecion("Nome do Operador ou Periodo escolhido não encontrado");
                 }
@@ -77,5 +82,4 @@ public class TransferenciaServiceImpl implements TransferenciaService {
         return repository.findByNomeOperadorTransacaoAndDataTransferenciaBetween(nomeOperador, inicioPeriodo,
                 fimPeriodo);
     }
-
 }
