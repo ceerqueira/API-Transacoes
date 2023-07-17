@@ -2,13 +2,9 @@
 
 ## Descrição 
 
-A API Transações é uma solução RESTful escrita em Java, projetada para consulta de transações por meio de diferentes parâmetros: ID da conta, período de tempo ou nome do operador. Sua estrutura robusta e escalável proporciona uma maneira eficiente de gerenciar e acessar informações de transações.
+A API Transações é uma solução RESTful escrita em Java, projetada para consulta de transações por meio de diferentes parâmetros: ID da conta, período de tempo ou nome do operador. Sua estrutura proporciona uma maneira eficiente de gerenciar e acessar informações de transações.
 
 ## Como executar a aplicação 
-
-### IDE
-
-A aplicação pode ser executada através de qualquer IDE de sua preferência que suporte o desenvolvimento em Java e Maven. Basta importar o projeto e executar a classe principal.
 
 ### Linha de Comando
 
