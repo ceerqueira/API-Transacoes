@@ -1,10 +1,10 @@
 package br.com.banco.service.impl;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import br.com.banco.domain.Transferencia;
 import br.com.banco.exception.IdContaNotFoundException;
 import br.com.banco.exception.NomeNotFoundExpecion;
 import br.com.banco.exception.PeriodoNotFoundExpecion;
@@ -12,74 +12,110 @@ import br.com.banco.exception.TranscacoesPorNomePeriodoEPorNomeOperadorNotFoundE
 import br.com.banco.repository.TransacaoRepository;
 import br.com.banco.service.TransferenciaService;
 
-// Anotação indicando que esta classe é um serviço
+// A anotação @Service indica que esta classe é um serviço no Spring.
 @Service
 public class TransferenciaServiceImpl implements TransferenciaService {
 
-    // Injeção automática da classe TransacaoRepository
+    // Injeção de dependência do TransacaoRepository.
     @Autowired
     private TransacaoRepository repository;
 
-    // Implementação do método buscarTransacoes da interface TransferenciaService
+    // Método para buscar transações com base nos parâmetros fornecidos.
     @Override
-    public List<Transferencia> buscarTransacoes(Long contaId, LocalDateTime inicioPeriodo, LocalDateTime fimPeriodo,
+    public ResponseEntity<?> buscarTransacoes(Long contaId, LocalDateTime inicioPeriodo, LocalDateTime fimPeriodo,
             String nomeOperador) {
 
-        // Verifica quais parâmetros foram fornecidos e chama o método correspondente
+        // Verifica se todos os parâmetros foram fornecidos.
+        // Se foram, chama o método para buscar por operador e período.
         if (inicioPeriodo != null && fimPeriodo != null && nomeOperador != null && !nomeOperador.trim().isEmpty()) {
             return transcacoesPorNomePeriodoEPorNomeOperador(nomeOperador, inicioPeriodo, fimPeriodo);
         } else {
+            // Se apenas a conta foi fornecida, busca transações daquela conta.
             if (contaId != null) {
                 return transacoesPorContaId(contaId);
-            } else if (inicioPeriodo != null && fimPeriodo != null) {
+            }
+            // Se o período foi fornecido, busca transações naquele período.
+            else if (inicioPeriodo != null && fimPeriodo != null) {
                 return transacoesPorPeriodo(inicioPeriodo, fimPeriodo);
-            } else if (nomeOperador != null) {
+            }
+            // Se o nome do operador foi fornecido, busca transações daquele operador.
+            else if (nomeOperador != null) {
                 return transacoesPorNomeOperador(nomeOperador);
-            } else {
+            } 
+            // Se nenhum parâmetro foi fornecido, retorna todas as transações.
+            else {
                 return todasTransacoes();
             }
         }
     }
 
-    // Implementação dos outros métodos da interface TransferenciaService
-    // Eles buscam transações com base em diferentes critérios e lançam exceções se não encontrarem nenhuma transação
+    // Método para buscar transações por ID de conta.
+    // Retorna exceção se a conta não for encontrada.
     @Override
-    public List<Transferencia> transacoesPorContaId(Long contaId) {
-        if (repository.findByContaId(contaId).isEmpty()) {
-            throw new IdContaNotFoundException("O número do ID Conta não foi encontrado");
+    public ResponseEntity<?> transacoesPorContaId(Long contaId) {
+        try {
+            if (repository.findByContaId(contaId).isEmpty()) {
+                throw new IdContaNotFoundException("O número do ID Conta não foi encontrado");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
 
-        return repository.findByContaId(contaId);
+        return ResponseEntity.ok().body(repository.findByContaId(contaId));
     }
 
+    // Método para buscar transações por período.
+    // Retorna exceção se não houver transações no período.
     @Override
-    public List<Transferencia> transacoesPorPeriodo(LocalDateTime inicioPeriodo, LocalDateTime fimPeriodo) {
-        if (repository.findByDataTransferenciaBetween(inicioPeriodo, fimPeriodo).isEmpty()) {
-            throw new PeriodoNotFoundExpecion("O Periodo de tempo escolhido não foi encontrado");
+    public ResponseEntity<?> transacoesPorPeriodo(LocalDateTime inicioPeriodo, LocalDateTime fimPeriodo) {
+        try {
+            if (repository.findByDataTransferenciaBetween(inicioPeriodo, fimPeriodo).isEmpty()) {
+                throw new PeriodoNotFoundExpecion("O Periodo de tempo escolhido não foi encontrado");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
-        return repository.findByDataTransferenciaBetween(inicioPeriodo, fimPeriodo);
+        return ResponseEntity.ok().body(repository.findByDataTransferenciaBetween(inicioPeriodo, fimPeriodo));
     }
 
+    // Método para buscar transações por nome de operador.
+    // Retorna exceção se o operador não for encontrado.
     @Override
-    public List<Transferencia> transacoesPorNomeOperador(String nomeOperador) {
-                if (repository.findByNomeOperadorTransacao(nomeOperador).isEmpty()) {
-            throw new NomeNotFoundExpecion("Nome do Operador não encontrado");
+    public ResponseEntity<?> transacoesPorNomeOperador(String nomeOperador) {
+        try {
+            if (repository.findByNomeOperadorTransacao(nomeOperador).isEmpty()) {
+                throw new NomeNotFoundExpecion("Nome do Operador não encontrado");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
-        return repository.findByNomeOperadorTransacao(nomeOperador);
+        return ResponseEntity.ok().body(repository.findByNomeOperadorTransacao(nomeOperador));
     }
 
+    // Método para buscar todas as transações.
     @Override
-    public List<Transferencia> todasTransacoes() {
-        return repository.findAll();
+    public ResponseEntity<?> todasTransacoes() {
+        return ResponseEntity.ok(repository.findAll());
     }
 
+    // Método para buscar transações por nome de operador e período.
+    // Retorna exceção se o operador ou o período não forem encontrados.
     @Override
-    public List<Transferencia> transcacoesPorNomePeriodoEPorNomeOperador(String nomeOperador,LocalDateTime inicioPeriodo, LocalDateTime fimPeriodo) {
-        if(repository.findByNomeOperadorTransacaoAndDataTransferenciaBetween(nomeOperador, inicioPeriodo,fimPeriodo).isEmpty()){
-                throw new TranscacoesPorNomePeriodoEPorNomeOperadorNotFoundExpecion("Nome do Operador ou Periodo escolhido não encontrado");
-                }
-        
-        return repository.findByNomeOperadorTransacaoAndDataTransferenciaBetween(nomeOperador, inicioPeriodo,
-                fimPeriodo);
+    public ResponseEntity<?> transcacoesPorNomePeriodoEPorNomeOperador(String nomeOperador,
+            LocalDateTime inicioPeriodo, LocalDateTime fimPeriodo) {
+        try {
+            if (repository
+                    .findByNomeOperadorTransacaoAndDataTransferenciaBetween(nomeOperador, inicioPeriodo, fimPeriodo)
+                    .isEmpty()) {
+                throw new TranscacoesPorNomePeriodoEPorNomeOperadorNotFoundExpecion(
+                        "Nome do Operador ou Periodo escolhido não encontrado");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+
+        return ResponseEntity
+                .ok(repository.findByNomeOperadorTransacaoAndDataTransferenciaBetween(nomeOperador, inicioPeriodo,
+                        fimPeriodo));
     }
 }
