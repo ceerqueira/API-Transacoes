@@ -32,7 +32,7 @@ public class TransferenciaController {
         try{
             transacoes = transferenciaService.buscarTransacoes(contaId, inicioPeriodo, fimPeriodo, nomeOperador);
         }catch (Exception e){
-            return  ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            return  ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
         }
 
